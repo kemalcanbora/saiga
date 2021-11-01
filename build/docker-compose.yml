@@ -1,0 +1,32 @@
+version: '3'
+services:
+  app:
+    container_name: saiga
+    build:
+      context: ..
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+    restart: on-failure
+    depends_on:
+      - mongodb
+    networks:
+      - fullstack
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rosemarypassword
+      MONGO_INITDB_DATABASE: rosemaryDB
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data_volume:/data/mongo/db
+    networks:
+      - fullstack
+volumes:
+  mongo_data_volume:
+
+networks:
+  fullstack:
+    driver: bridge
