@@ -10,7 +10,6 @@ import (
 	"time"
 )
 
-
 func SignUp(response http.ResponseWriter, request *http.Request) {
 	var user models.User
 
@@ -37,7 +36,7 @@ func SignUp(response http.ResponseWriter, request *http.Request) {
 
 	user.Password = helpers.GetHash([]byte(user.Password))
 	user.CreatedTime = time.Now().Unix()
-	if user.Role == ""{
+	if user.Role == "" {
 		user.Role = "customer"
 	}
 
@@ -46,11 +45,17 @@ func SignUp(response http.ResponseWriter, request *http.Request) {
 }
 
 func UserLogin(response http.ResponseWriter, request *http.Request) {
-	var user models.User
-
-	json.NewDecoder(request.Body).Decode(&user)
-
 	response.Header().Set("Content-Type", "application/json")
+	var user models.User
+	json.NewDecoder(request.Body).Decode(&user)
+	validate := validator.New()
+	errVal := validate.Struct(user)
+
+	if errVal != nil {
+		helpers.HTTPErrorHandler(response, "Email or Password field is empty!", http.StatusUnauthorized)
+		return
+	}
+
 	result := helpers.Mongo.FindUserWithEmail(user)
 	passErr := helpers.CheckPasswordHash(user.Password, result.Password)
 
