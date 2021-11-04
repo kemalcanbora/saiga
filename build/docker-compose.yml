@@ -4,7 +4,7 @@ services:
     container_name: saiga
     build:
       context: ..
-      dockerfile: ./Dockerfile
+      dockerfile: ./build/Dockerfile
     ports:
       - 8080:8080
     restart: on-failure
