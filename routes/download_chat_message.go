@@ -8,7 +8,7 @@ import (
 	"os"
 	c "saiga/config"
 	cloud "saiga/pkg/aws_cloud"
-	h "saiga/pkg/helpers"
+	h "saiga/pkg/clients"
 )
 
 func DownloadChatMessage(w http.ResponseWriter, r *http.Request) {

@@ -8,6 +8,7 @@ import (
 	c "saiga/config"
 	mo "saiga/models"
 	cloud "saiga/pkg/aws_cloud"
+	"saiga/pkg/clients"
 	"sync"
 )
 
@@ -19,11 +20,11 @@ func Initialization() {
 	wg.Add(2)
 	go func() {
 		defer wg.Done()
-		InsertDummyData(path+c.Configure().AntonData)
+		InsertDummyData(path + c.Configure().AntonData)
 	}()
 	go func() {
 		defer wg.Done()
-		InsertDummyData(path+c.Configure().SteveData)
+		InsertDummyData(path + c.Configure().SteveData)
 	}()
 	wg.Wait()
 }
@@ -48,5 +49,5 @@ func InsertDummyData(jsonPath string) {
 	cm.Messages[0].Attachment.Bucket = s3Result["bucket"]
 	cm.Messages[0].Attachment.Key = s3Result["key"]
 
-	_, _ = Mongo.Insert(cm, c.Configure().MongoChatCollection)
+	_, _ = clients.Mongo.Insert(cm, c.Configure().MongoChatCollection)
 }

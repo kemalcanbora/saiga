@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"saiga/models"
+	"saiga/pkg/clients"
 	"saiga/pkg/helpers"
 	"time"
 )
@@ -23,7 +24,7 @@ func SignUp(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	userCheck := helpers.Mongo.FindUserWithEmail(user)
+	userCheck := clients.Mongo.FindUserWithEmail(user)
 	if userCheck.Email == user.Email {
 		helpers.HTTPErrorHandler(response, "This email is already registered!", http.StatusNotAcceptable)
 		return
@@ -40,7 +41,7 @@ func SignUp(response http.ResponseWriter, request *http.Request) {
 		user.Role = "customer"
 	}
 
-	result, _ := helpers.Mongo.Insert(user, "user")
+	result, _ := clients.Mongo.Insert(user, "user")
 	json.NewEncoder(response).Encode(result)
 }
 
@@ -56,7 +57,7 @@ func UserLogin(response http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	result := helpers.Mongo.FindUserWithEmail(user)
+	result := clients.Mongo.FindUserWithEmail(user)
 	passErr := helpers.CheckPasswordHash(user.Password, result.Password)
 
 	if passErr != true {

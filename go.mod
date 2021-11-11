@@ -4,6 +4,8 @@ go 1.16
 
 require (
 	github.com/aws/aws-sdk-go v1.41.14
+	github.com/casbin/casbin/v2 v2.39.0
+	github.com/casbin/mongodb-adapter/v3 v3.2.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/gorilla/mux v1.8.0
