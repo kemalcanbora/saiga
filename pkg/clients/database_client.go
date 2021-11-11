@@ -2,4 +2,4 @@ package clients
 
 import "saiga/pkg/mongo"
 
-var Mongo = mongo.Connection()
+var Mongo = mongo.Client()

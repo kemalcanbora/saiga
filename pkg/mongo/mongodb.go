@@ -18,7 +18,7 @@ type MongoClient struct {
 	Cancel  func()
 }
 
-func Connection() MongoClient {
+func Client() MongoClient {
 	mongoClient := MongoClient{}
 	var err error
 	credential := options.Credential{
@@ -79,7 +79,7 @@ func (m *MongoClient) FindAttachmentURL(collectionName, attachmentId string) (mo
 	var model mo.ChatMeta
 	collection := m.Client.Database(c.Configure().MongoDatabase).Collection(collectionName)
 
-	err := collection.FindOne(context.TODO(),bson.M{"messages.attachment.id": attachmentId}).Decode(&model)
+	err := collection.FindOne(context.TODO(), bson.M{"messages.attachment.id": attachmentId}).Decode(&model)
 	if err != nil {
 		fmt.Println(err)
 	}
